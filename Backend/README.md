@@ -191,3 +191,75 @@ The `/users/logout` endpoint logs out the authenticated user by clearing the aut
   - "message": "Logged out"
 - }
 
+# `/captains/register` Endpoint
+
+## Description
+The `/captains/register` endpoint allows captains to register by providing their full name, email, password, and vehicle details. The input is validated, the password is securely hashed, and a JSON Web Token (JWT) is generated upon successful registration.
+
+---
+
+## Endpoint
+
+### URL
+`POST /captains/register`
+
+### Method
+`POST`
+
+---
+
+## Request
+
+### Headers
+- **Content-Type**: `application/json`
+
+### Body
+The request body should be a JSON object containing the following fields:
+
+| Field                    | Type     | Required | Description                                |
+|--------------------------|----------|----------|--------------------------------------------|
+| `fullname.firstname`     | `string` | Yes      | Captain's first name (minimum 3 characters). |
+| `fullname.lastname`      | `string` | No       | Captain's last name (optional).            |
+| `email`                  | `string` | Yes      | Captain's email, must be valid and unique. |
+| `password`               | `string` | Yes      | Password, minimum 6 characters.            |
+| `vehicle.color`          | `string` | Yes      | Vehicle color.                             |
+| `vehicle.plate`          | `string` | Yes      | Vehicle plate number.                      |
+| `vehicle.capacity`       | `number` | Yes      | Vehicle seating capacity.                  |
+| `vehicle.vehicletype`    | `string` | Yes      | Type of vehicle (e.g., car, bike).         |
+
+### Example
+#### Request
+
+- {
+  - "fullname": {
+    - "firstname": "Jane",
+    - "lastname": "Doe"
+  - },
+  - "email": "jane.doe@example.com",
+  - "password": "securepassword123",
+  - "vehicle": {
+    - "color": "Red",
+    - "plate": "ABC123",
+    - "capacity": 4,
+    - "vehicletype": "Car"
+  - }
+- }
+
+### Success Response
+- {
+  - "captain": {
+    - "_id": "63f1e1d5c9b0a914d88e5a6e",
+    - "fullname": {
+      - "firstname": "Jane",
+      - "lastname": "Doe"
+    - },
+    - "email": "jane.doe@example.com",
+    - "vehicle": {
+      - "color": "Red",
+      - "plate": "ABC123",
+      - "capacity": 4,
+      - "vehicletype": "Car"
+    - }
+  - },
+  - "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+- }
