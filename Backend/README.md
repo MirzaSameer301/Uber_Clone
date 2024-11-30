@@ -191,6 +191,9 @@ The `/users/logout` endpoint logs out the authenticated user by clearing the aut
   - "message": "Logged out"
 - }
 
+# `/captains` Endpoints Documentation
+
+
 # `/captains/register` Endpoint
 
 ## Description
@@ -263,3 +266,162 @@ The request body should be a JSON object containing the following fields:
   - },
   - "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 - }
+
+## `/captains/login` Endpoint
+
+### Description
+The `/captains/login` endpoint allows captains to log in by providing their email and password. Upon successful authentication, a JSON Web Token (JWT) is generated, and the token is sent as a cookie.
+
+---
+
+### URL
+`POST /captains/login`
+
+### Method
+`POST`
+
+---
+
+### Request
+
+#### Headers
+- **Content-Type**: `application/json`
+
+#### Body
+The request body should be a JSON object containing the following fields:
+
+| Field       | Type     | Required | Description                          |
+|-------------|----------|----------|--------------------------------------|
+| `email`     | `string` | Yes      | Captain's email, must be valid.      |
+| `password`  | `string` | Yes      | Captain's password.                  |
+
+#### Example
+
+- {
+  - "email": "jane.doe@example.com",
+  - "password": "securepassword123"
+- }
+
+#### Success Response
+- {
+  - "captain": {
+    - "_id": "63f1e1d5c9b0a914d88e5a6e",
+    - "fullname": {
+      - "firstname": "Jane",
+      - "lastname": "Doe"
+    - },
+    - "email": "jane.doe@example.com",
+    - "vehicle": {
+      - "color": "Red",
+      - "plate": "ABC123",
+      - "capacity": 4,
+      - "vehicletype": "Car"
+    - }
+  - },
+  - "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+- }
+#### Failure Response
+- {
+  - "message": "Invalid Email or Password"
+- }
+
+# `/captains/profile` Endpoint
+
+## Description
+The `/captains/profile` endpoint retrieves the authenticated captain's profile information. This endpoint requires a valid JSON Web Token (JWT) for authentication.
+
+---
+
+## Endpoint
+
+### URL
+`GET /captains/profile`
+
+### Method
+`GET`
+
+---
+
+## Request
+
+### Headers
+- **Authorization**: `Bearer <token>` (or the `token` cookie if authentication is managed via cookies).
+
+---
+
+## Response
+
+### Success Response
+
+#### Status Code
+`200 OK`
+
+#### Body
+- {
+  - "captain": {
+    - "_id": "63f1e1d5c9b0a914d88e5a6e",
+    - "fullname": {
+      - "firstname": "Jane",
+      - "lastname": "Doe"
+    - },
+    - "email": "jane.doe@example.com",
+    - "vehicle": {
+      - "color": "Red",
+      - "plate": "ABC123",
+      - "capacity": 4,
+      - "vehicletype": "Car"
+    - }
+  - }
+- }
+
+#### Error Response
+
+- {
+  - "message": "Unauthorized"
+- }
+
+# `/captains/logout` Endpoint
+
+## Description
+The `/captains/logout` endpoint logs out the authenticated captain by clearing the authentication token from cookies and blacklisting the token to prevent reuse.
+
+---
+
+## Endpoint
+
+### URL
+`POST /captains/logout`
+
+### Method
+`POST`
+
+---
+
+## Request
+
+### Headers
+- **Authorization**: `Bearer <token>` (if the token is not sent as a cookie).
+
+---
+
+## Response
+
+### Success Response
+
+#### Status Code
+`200 OK`
+
+#### Body
+
+- {
+  - "message": "Logout successfully"
+- }
+
+#### Error Response
+
+- {
+  - "message": "Unauthorized"
+- }
+
+
+
