@@ -103,4 +103,91 @@ The request body should be a JSON object containing the following fields:
    - "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 - }
 
+## `/users/profile` Endpoint
+
+### Description
+The `/users/profile` endpoint retrieves the authenticated user's profile information. This endpoint requires authentication via a valid token.
+
+---
+
+### URL
+`GET /users/profile`
+
+### Method
+`GET`
+
+---
+
+### Request
+
+#### Headers
+- **Authorization**: `Bearer <token>`
+
+---
+
+### Response
+
+#### Success Response
+
+##### Status Code
+`200 OK`
+
+##### Body
+- {
+  - "_id": "63f1e1d5c9b0a914d88e5a6e",
+  - "fullname": {
+   -  "firstname": "John",
+   -  "lastname": "Doe"
+  -  },
+  - "email": "john.doe@example.com"
+- }
+
+#### Failure Response
+
+##### Status Code
+`401`
+
+##### Body
+- {
+  - "Unauthorized"
+- }
+
+# `/users/logout` Endpoint
+
+## Description
+The `/users/logout` endpoint logs out the authenticated user by clearing the authentication token from cookies and adding the token to the blacklist to prevent reuse.
+
+---
+
+## Endpoint
+
+### URL
+`POST /users/logout`
+
+### Method
+`POST`
+
+---
+
+## Request
+
+### Headers
+- **Authorization**: `Bearer <token>` (optional, if the token is provided in the headers)
+- **Cookies**: 
+  - **token**: The authentication token stored in cookies.
+
+---
+
+## Response
+
+### Success Response
+
+#### Status Code
+`200 OK`
+
+#### Body
+
+- {
+  - "message": "Logged out"
+- }
 
