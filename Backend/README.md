@@ -52,5 +52,55 @@ The request body should be a JSON object containing the following fields:
   - "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 - }
 
+# `/users/login` Endpoint
+
+## Description
+The `/users/login` endpoint allows users to log in by providing their email and password. The endpoint validates the credentials, verifies the user's existence, checks the password, and returns a JSON Web Token (JWT) upon successful authentication.
+
+---
+
+## Endpoint
+
+### URL
+`POST /users/login`
+
+### Method
+`POST`
+
+---
+
+## Request
+
+### Headers
+- **Content-Type**: `application/json`
+
+### Body
+The request body should be a JSON object containing the following fields:
+
+| Field       | Type     | Required | Description                          |
+|-------------|----------|----------|--------------------------------------|
+| `email`     | `string` | Yes      | User's email, must be valid.         |
+| `password`  | `string` | Yes      | User's password.                     |
+
+### Example
+#### Request
+
+- {
+  - "email": "john.doe@example.com",
+  - "password": "securepassword123"
+- }
+
+### Response Example
+- {
+ - "user": {
+   - "_id": "63f1e1d5c9b0a914d88e5a6e",
+   - "fullname": {
+    -  "firstname": "John",
+    -  "lastname": "Doe"
+   - },
+   - "email": "john.doe@example.com"
+- },
+   - "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+- }
 
 
