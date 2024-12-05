@@ -1,26 +1,38 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import { UserDataContext } from "../context/UserContext";
+import axios from "axios";
+import { useContext } from "react";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState({});
-
-  const handleSubmmit=(e)=>{
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserDataContext);
+  const handleSubmmit = async (e) => {
     e.preventDefault();
-    setUserData({
-        email:email,
-        password:password
-    });
-    setEmail('');
-    setPassword('');
-  }
+    const userData = {
+      email: email,
+      password: password,
+    };
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/login`,
+      userData
+    );
+    if (response.status === 200) {
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      navigate("/home");
+    }
+    setEmail("");
+    setPassword("");
+  };
 
   return (
     <div className="px-6 flex flex-col justify-between h-screen pb-5">
       <div>
-        <form onSubmit={(e)=>handleSubmmit(e)}>
+        <form onSubmit={(e) => handleSubmmit(e)}>
           <div className="flex flex-col gap-5">
             <img
               className="w-20"

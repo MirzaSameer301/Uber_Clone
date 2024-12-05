@@ -1,30 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
+import { UserDataContext } from "../context/UserContext";
 
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState({});
+  const navigate = useNavigate();
 
-  const handleSubmmit = (e) => {
+  const { user, setUser } = useContext(UserDataContext);
+
+  const handleSubmmit = async (e) => {
     e.preventDefault();
-    setUserData({
-      fullName: {
-        firstName: firstName,
-        lastName: lastName,
+    const userData = {
+      fullname: {
+        firstname: firstName,
+        lastname: lastName,
       },
       email: email,
       password: password,
-    });
-
+    };
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/register`,
+      userData
+    );
+    if (response.status === 201) {
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      navigate("/home");
+    }
     setEmail("");
     setPassword("");
   };
-  console.log(userData);
-  
+
   return (
     <div className="px-6 flex flex-col justify-between h-screen pb-5">
       <div>
@@ -88,7 +100,8 @@ const Signup = () => {
 
         <Link to={"/login"}>
           <p className="text-lg my-2">
-            Already have an account? <span className="text-blue-800">Login</span>{" "}
+            Already have an account?{" "}
+            <span className="text-blue-800">Login</span>{" "}
           </p>
         </Link>
       </div>
